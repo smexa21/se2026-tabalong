@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BPS Tabalong - SE2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #0066b2; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+        .loader {
+            border: 4px solid #f3f3f3; border-top: 4px solid #ffc107;
+            border-radius: 50%; width: 30px; height: 30px;
+            animation: spin 1s linear infinite; margin-top: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <div id="splash-screen">
+        <img src="https://www.bps.go.id/_next/image?url=%2Fassets%2Flogo-bps.png&w=1080&q=75" alt="Logo BPS" class="w-32 h-auto mb-4 animate-pulse">
+        <h2 class="text-white font-bold tracking-widest text-sm uppercase">Sensus Ekonomi 2026</h2>
+        <p class="text-white text-[10px]">BPS KAB. TABALONG</p>
+        <div class="loader"></div>
+    </div>
+
+    <div class="bg-[#0066b2] text-white p-4 shadow-lg flex items-center justify-center space-x-4 border-b-4 border-[#ffc107]">
+        <img src="https://www.bps.go.id/_next/image?url=%2Fassets%2Flogo-bps.png&w=1080&q=75" alt="Logo BPS" class="h-10 w-auto">
+        <div class="text-left">
+            <h1 class="text-lg font-bold leading-tight uppercase tracking-tight">SE2026 TABALONG</h1>
+            <p class="text-[10px] font-bold tracking-widest uppercase text-yellow-300">Pengawasan Lapangan</p>
+        </div>
+    </div>
+
+    <div class="p-4 max-w-md mx-auto mb-10">
+        <div class="space-y-4 bg-white p-5 rounded-3xl shadow-md border border-gray-200">
+            
+            <div class="grid grid-cols-1 gap-3">
+                <div>
+                    <label class="block font-black mb-1 text-[10px] uppercase text-gray-500">Nama KOSEKA :</label>
+                    <input type="text" id="koseka" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none text-sm focus:border-[#0066b2]" placeholder="Koseka">
+                </div>
+                
+                    <div>
+                        <label class="block font-black mb-1 text-[10px] uppercase text-gray-500">Nama PML :</label>
+                        <input type="text" id="pml" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none text-sm focus:border-[#0066b2]" placeholder="PML">
+                    </div>
+                    <div>
+                        <label class="block font-black mb-1 text-[10px] uppercase text-gray-500">Nama PCL :</label>
+                        <input type="text" id="pcl" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none text-sm focus:border-[#0066b2]" placeholder="PCL">
+                    </div>
+                
+            </div>
+
+            <div class="space-y-3 bg-blue-50 p-4 rounded-2xl border border-blue-100">
+                <div>
+                    <label class="block font-black mb-1 text-[10px] uppercase text-blue-700">Kecamatan :</label>
+                    <select id="kecamatan" onchange="updateDesa()" class="w-full p-3 border-2 border-white rounded-xl bg-white outline-none text-sm font-bold">
+                        <option value="">-- Pilih --</option>
+                        <option value="Banua Lawas">Banua Lawas</option>
+                        <option value="Pugaan">Pugaan</option>
+                        <option value="Kelua">Kelua</option>
+                        <option value="Muara Harus">Muara Harus</option>
+                        <option value="Tanta">Tanta</option>
+                        <option value="Tanjung">Tanjung</option>
+                        <option value="Murung Pudak">Murung Pudak</option>
+                        <option value="Haruai">Haruai</option>
+                        <option value="Upau">Upau</option>
+                        <option value="Bintang Ara">Bintang Ara</option>
+                        <option value="Muara Uya">Muara Uya</option>
+                        <option value="Jaro">Jaro</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-black mb-1 text-[10px] uppercase text-blue-700">Desa/Kelurahan :</label>
+                    <select id="desa" onchange="updateSLS()" class="w-full p-3 border-2 border-white rounded-xl bg-white outline-none text-sm font-bold">
+                        <option value="">-- Pilih Desa --</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-black mb-1 text-[10px] uppercase text-blue-700">SLS / RT :</label>
+                    <select id="sls" class="w-full p-3 border-2 border-white rounded-xl bg-white outline-none text-sm font-bold">
+                        <option value="">-- Pilih SLS --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block font-black mb-1 text-[10px] uppercase">Nama Kepala Keluarga :</label>
+                <input type="text" id="nama_kk" class="w-full p-3 border-2 border-gray-100 rounded-xl outline-none text-sm" placeholder="Nama KK">
+            </div>
+
+            <div>
+                <label class="block font-black mb-1 text-[10px] uppercase text-green-700 font-bold">Jumlah Anggota RT :</label>
+                <input type="number" id="art" class="w-full p-3 border-2 border-green-100 rounded-xl outline-none text-sm font-bold bg-green-50" placeholder="0">
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block font-black mb-1 text-[10px] uppercase text-gray-700">Berhasil Didata?</label>
+                    <select id="berhasil" onchange="toggleAdaUsaha()" class="w-full p-3 border-2 border-gray-100 rounded-xl bg-white text-sm outline-none font-bold">
+                        <option value="T">T (Tidak)</option>
+                        <option value="Y">Y (Ya)</option>
+                    </select>
+                </div>
+
+                <div id="box-ada-usaha" class="hidden">
+                    <label class="block font-black mb-1 text-[10px] uppercase text-blue-700">Apakah Ada Usaha?</label>
+                    <select id="ada_usaha" onchange="toggleJmlUsaha()" class="w-full p-3 border-2 border-blue-100 rounded-xl bg-blue-50 text-sm outline-none font-bold">
+                        <option value="T">T (Tidak)</option>
+                        <option value="Y">Y (Ya)</option>
+                    </select>
+                </div>
+
+                <div id="box-jml-usaha" class="hidden">
+                    <label class="block font-black mb-1 text-[10px] uppercase text-orange-600 font-bold">Jumlah Usaha :</label>
+                    <input type="number" id="jml_usaha" class="w-full p-3 border-2 border-orange-200 rounded-xl outline-none text-sm font-bold bg-orange-50" placeholder="0">
+                </div>
+            </div>
+
+            <div id="location-status" class="text-[9px] text-gray-500 italic text-center font-bold">📍 Mencari lokasi GPS...</div>
+
+            <button id="btn-kirim" onclick="sendData()" class="w-full bg-[#28a745] text-white font-black py-4 rounded-2xl shadow-xl text-lg uppercase tracking-tight active:scale-95 transition-all">🚀 Kirim Data Sensus</button>
+        </div>
+        <p class="text-center text-gray-400 text-[9px] mt-6 font-bold uppercase tracking-widest">BPS KABUPATEN TABALONG</p>
+    </div>
+
+    <script>
+    let userCoords = "Tidak Terdeteksi";
+
+    const wilayahData = {
+        "Banua Lawas": {
+            "Hapalah": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008"],
+            "Batang Banyu": ["RT 001","RT 002","RT 003","RT 004"],
+            "Sungai Durian": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Pematang": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008"],
+            "Hariang": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Bungin": ["RT 001","RT 002","RT 003","RT 004"],
+            "Bangkiling": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Bangkiling Raya": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Banua Lawas": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008"],
+            "Habau": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Banua Rantau": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009"],
+            "Habau Hulu": ["RT 001","RT 002","RT 003","RT 004"],
+            "Purai": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008"],
+            "Talan": ["RT 001","RT 002","RT 003","RT 004"],
+            "Sungai Anyar": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008"]
+        },
+        "Pugaan": {
+            "Pampanan": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Tamunti": ["RT 001","RT 002","RT 003"],
+            "Pugaan": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Halangan": ["RT 001","RT 002","RT 003","RT 004"],
+            "Sungai Rukam I": ["RT 001","RT 002","RT 003","RT 004"],
+            "Sungai Rukam II": ["RT 001","RT 002","RT 003"],
+            "Jirak": ["RT 001","RT 002","RT 003","RT 004","RT 005"]
+        },
+        "Kelua": {
+            "Telaga Itar": ["RT 001","RT 002","RT 003","RT 004"],
+            "Pudak Setegal": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Bahungin": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Takulat": ["RT 001","RT 002","RT 003","RT 004"],
+            "Pulau": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Masintan": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008"],
+            "Paliat": ["RT 001","RT 002","RT 003","RT 004"],
+            "Sungai Buluh": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Binturu": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Karangan Putih": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Pasar Panas": ["RT 001","RT 002","RT 003","RT 004"],
+            "Ampukung": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009"]
+        },
+        "Muara Harus": {
+            "Madang": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Padangin": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Harus": ["RT 001","RT 002","RT 003","RT 004"],
+            "Tantaringin": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Manduin": ["RT 001","RT 002","RT 003","RT 004"],
+            "Mantuil": ["RT 001","RT 002","RT 003","RT 004"],
+            "Murung Karangan": ["RT 001","RT 002","RT 003","RT 004","RT 005"]
+        },
+        "Tanta": {
+            "Walangkir": ["RT 001","RT 002","RT 003","RT 004"],
+            "Pulau Ku'u": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Tamiyang": ["RT 001","RT 002","RT 003"],
+            "Warukin": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010"],
+            "Padang Panjang": ["RT 001","RT 002","RT 003","RT 004","RT 008","RT 009"],
+            "Barimbun": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Padangin": ["RT 001","RT 002","RT 003"],
+            "Luk Bayur": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Mangkusip": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Tanta": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Tanta Hulu": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010"],
+            "Puain Kanan": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Pamarangan Kanan": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Murung Baru": ["RT 001","RT 002","RT 003","RT 004","RT 005"]
+        },
+        "Tanjung": {
+            "Banyu Tajun": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Sungai Pimping": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Pamarangan Kiwa": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Puain Kiwa": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Jangkung": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012"],
+            "Tanjung": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012A","RT 012B","RT 013","RT 015","RT 016"],
+            "Agung": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Kambitin": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Hikun": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008"],
+            "Kambitin Raya": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012","RT 013","RT 014","RT 015","RT 016","RT 017","RT 018"],
+            "Wayau": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010"],
+            "Juai": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Garunggung": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Kitang": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Mahe Seberang": ["RT 001","RT 002","RT 003"]
+        },
+        "Murung Pudak": {
+            "Sulingan": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012"],
+            "Pembataan": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012","RT 013","RT 014","RT 015","RT 016","RT 017","RT 018"],
+            "Belimbing Raya": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012","RT 013","RT 014","RT 015","RT 016","RT 017","RT 018","RT 019","RT 020","RT 021","RT 022","RT 023","RT 024"],
+            "Maburai": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011"],
+            "Mabu'un": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012","RT 013","RT 014","RT 015","RT 016","RT 017","RT 018","RT 019","RT 020","RT 021"],
+            "Belimbing": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012","RT 013","RT 014","RT 015","RT 016","RT 017","RT 019","RT 020","RT 021"],
+            "Masukau": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Kapar": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012","RT 013","RT 014","RT 015"],
+            "Kasiau": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Kasiau Raya": ["RT 001","RT 002","RT 003","RT 004"]
+        },
+        "Haruai": {
+            "Lok Batu": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Kembang Kuning": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Seradang": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Halong": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Suput": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Catur Karya": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Mahe Pasar": ["RT 001","RT 002","RT 003","RT 004"],
+            "Suriyan": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Hayup": ["RT 001","RT 002","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012","RT 013","RT 014","RT 015","RT 016","RT 017"],
+            "Bongkang": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Wirang": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Nawin": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011"],
+            "Marindi": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"]
+        },
+        "Upau": {
+            "Masingai II": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012","RT 013","RT 014","RT 015"],
+            "Masingai I": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012","RT 013"],
+            "Bilas": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Kaong": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Pangelak": ["RT 001","RT 002","RT 003","RT 004"],
+            "Kinarum": ["RT 001","RT 002","RT 003"]
+        },
+        "Bintang Ara": {
+            "Waling": ["RT 001","RT 002","RT 003","RT 004"],
+            "Usih": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Argo Mulyo": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008"],
+            "Bintang Ara": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Burum": ["RT 001","RT 002","RT 003"],
+            "Hegar Manah": ["RT 001","RT 002","RT 003"],
+            "Bumi Makmur": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Panaan": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Dambung Raya": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"]
+        },
+        "Muara Uya": {
+            "Ribang": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012","RT 013","RT 014"],
+            "Kupang Nunding": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008"],
+            "Mangkupum": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010"],
+            "Kampung Baru": ["RT 001","RT 002","RT 003","RT 004"],
+            "Pelapi": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010"],
+            "Pasar Batu": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009"],
+            "Simpung Layung": ["RT 001","RT 002","RT 003","RT 004","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012","RT 013"],
+            "Uwie": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012","RT 013","RT 014","RT 015","RT 016"],
+            "Muara Uya": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011"],
+            "Lumbang": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009"],
+            "Santuun": ["RT 001","RT 002","RT 003","RT 004","RT 005"],
+            "Binjai": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Salikung": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Sungai Kumap": ["RT 001","RT 002","RT 003"]
+        },
+        "Jaro": {
+            "Namun": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Muang": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006"],
+            "Teratau": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007"],
+            "Purui": ["RT 001","RT 002","RT 003","RT 004"],
+            "Nalui": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008"],
+            "Jaro": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009","RT 010","RT 011","RT 012","RT 013","RT 014","RT 015","RT 016","RT 017"],
+            "Garagata": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008"],
+            "Solan": ["RT 001","RT 002","RT 003","RT 004","RT 005","RT 006","RT 007","RT 008","RT 009"],
+            "Lano": ["RT 001","RT 002","RT 003","RT 004","RT 005"]
+        }
+    };
+
+    window.onload = function() {
+        setTimeout(() => {
+            const splash = document.getElementById('splash-screen');
+            splash.style.opacity = '0';
+            setTimeout(() => splash.style.display = 'none', 800);
+        }, 2500);
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                userCoords = pos.coords.latitude + ", " + pos.coords.longitude;
+                document.getElementById('location-status').innerHTML = "📍 GPS Terkunci: " + userCoords;
+                document.getElementById('location-status').classList.add('text-green-600');
+            });
+        }
+    };
+
+    function updateDesa() {
+        const kec = document.getElementById('kecamatan').value;
+        const desaSelect = document.getElementById('desa');
+        desaSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
+        if(kec && wilayahData[kec]) {
+            Object.keys(wilayahData[kec]).forEach(desa => {
+                desaSelect.innerHTML += `<option value="${desa}">${desa}</option>`;
+            });
+        }
+        updateSLS();
+    }
+
+    function updateSLS() {
+        const kec = document.getElementById('kecamatan').value;
+        const desa = document.getElementById('desa').value;
+        const slsSelect = document.getElementById('sls');
+        slsSelect.innerHTML = '<option value="">-- Pilih SLS --</option>';
+        if(kec && desa && wilayahData[kec][desa]) {
+            wilayahData[kec][desa].forEach(sls => {
+                slsSelect.innerHTML += `<option value="${sls}">${sls}</option>`;
+            });
+        }
+    }
+
+    function toggleAdaUsaha() {
+        const berhasil = document.getElementById('berhasil').value;
+        const boxAdaUsaha = document.getElementById('box-ada-usaha');
+        const boxJmlUsaha = document.getElementById('box-jml-usaha');
+        if (berhasil === 'Y') {
+            boxAdaUsaha.classList.remove('hidden');
+        } else {
+            boxAdaUsaha.classList.add('hidden');
+            boxJmlUsaha.classList.add('hidden');
+            document.getElementById('ada_usaha').value = "T";
+            document.getElementById('jml_usaha').value = "";
+        }
+    }
+
+    function toggleJmlUsaha() {
+        const adaUsaha = document.getElementById('ada_usaha').value;
+        const boxJmlUsaha = document.getElementById('box-jml-usaha');
+        if (adaUsaha === 'Y') {
+            boxJmlUsaha.classList.remove('hidden');
+        } else {
+            boxJmlUsaha.classList.add('hidden');
+            document.getElementById('jml_usaha').value = "";
+        }
+    }
+
+    async function sendData() {
+        const btn = document.getElementById('btn-kirim');
+        if (!document.getElementById('pcl').value || !document.getElementById('nama_kk').value) {
+            alert('Lengkapi Nama PCL dan Nama KK!'); return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = "⏳ MENGIRIM KE GOOGLE SHEETS...";
+
+        try {
+            // GANTI DENGAN URL APPS SCRIPT BAPAK
+            const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCH_hFTMXO2mYZc3pwDAuoED9m8_nouR7Azt3lS_GoHYqlHniCMdGWMyGWHXrlDivP/exec'; 
+
+            await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    data: [{
+                        'waktu': new Date().toLocaleString('id-ID'),
+                        'koseka': document.getElementById('koseka').value,
+                        'pml': document.getElementById('pml').value,
+                        'pcl': document.getElementById('pcl').value,
+                        'kecamatan': document.getElementById('kecamatan').value,
+                        'desa': document.getElementById('desa').value,
+                        'sls': document.getElementById('sls').value,
+                        'nama_kk': document.getElementById('nama_kk').value,
+                        'art': document.getElementById('art').value,
+                        'berhasil': document.getElementById('berhasil').value,
+                        'ada_usaha': document.getElementById('ada_usaha').value,
+                        'jml_usaha': document.getElementById('jml_usaha').value || 0,
+                        'lokasi': userCoords
+                    }]
+                })
+            });
+
+            alert("✅ DATA SE2026 BERHASIL DIKIRIM!");
+            location.reload(); 
+        } catch (e) {
+            alert("Gagal mengirim data: " + e.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = "🚀 Kirim Data Sensus";
+        }
+    }
+    </script>
+</body>
+</html>
